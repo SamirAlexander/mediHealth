@@ -6,7 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Page() {
   return (
@@ -27,7 +28,9 @@ export default function Page() {
             Atención médica integral con calidad, confianza y calidez humana.
           </p>
           <div className="pl-56">
-            <Button className="mt-5">Agendar Cita</Button>
+            <Link href="/dashboard/gestiondecitas">
+              <Button className="mt-5">Agendar Cita</Button>
+            </Link>
           </div>
         </div>
       </div>

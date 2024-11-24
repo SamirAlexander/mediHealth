@@ -1,12 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 
+
 const links = [
-  { name: "Notificaciones", href: "notificaciones" },
+  /* { name: "Notificaciones", href: "notificaciones" }, */
   { name: "Gestión de Citas", href: "gestiondecitas" },
-  { name: "Historiales Médicos", href: "button" },
-  { name: "Medicación y Prescripción", href: "alert-dialog" },
-  { name: "Perfil y Configuración", href: "dialog" },  
+  { name: "Historial Médico", href: "historialesmedicos" },
+  /* { name: "Medicación y Prescripción", href: "medicacionprescripcion" }, */
+  /* { name: "Perfil y Configuración", href: "dialog" },   */
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DashboardLayout({
@@ -89,12 +90,14 @@ export default function DashboardLayout({
                 </svg>
                 <span className="self-center whitespace-nowrap ml-2">
                   {" "}
+                  <Link href="/">
                   MediHealth Center
+                  </Link>
                 </span>
               </a>
             </div>
-            <div className="text-4xl font-bold text-sky-500 text-center drop-shadow-md">
-              Centro Médico Integral
+            <div className="text-4xl font-bold text-sky-500 text-center drop-shadow-md" >             
+              Centro Médico Integral              
             </div>
             <div className="flex items-center">
               {/* User Avatar */}
