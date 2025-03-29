@@ -2,12 +2,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 
 
-const links = [
-  /* { name: "Notificaciones", href: "notificaciones" }, */
+const links = [  
   { name: "Gestión de Citas", href: "gestiondecitas" },
   { name: "Historial Médico", href: "historialesmedicos" },
-  /* { name: "Medicación y Prescripción", href: "medicacionprescripcion" }, */
-  /* { name: "Perfil y Configuración", href: "dialog" },   */
+  { name: "Administrador", href: "administrador" } 
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DashboardLayout({
