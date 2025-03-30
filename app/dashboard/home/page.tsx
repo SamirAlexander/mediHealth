@@ -14,7 +14,7 @@ export default function Page() {
     <div>
       <div
         className="w-full h-[66vh] bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/background.jpg')" }}
+        style={{ backgroundImage: "url('/images/enfermeras.jpg')" }}
       >
         {/* Add content here if needed */}
         <div className="pt-28 pl-5">

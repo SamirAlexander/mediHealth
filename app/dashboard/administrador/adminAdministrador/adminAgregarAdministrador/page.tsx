@@ -34,34 +34,28 @@ const formSchema = z.object({
     rol: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    idPaciente: z.string().min(1, {
+    idAdmin: z.string().min(1, {
         message: "Username must be at least 2 characters.",
     }),
-    historialMedico: z.string().min(2, {
+    departamento: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    numeroSeguro: z.string().min(2, {
+    nivelAcceso: z.string().min(1, {
         message: "Username must be at least 2 characters.",
     }),
-    fechaNacimiento: z.string().min(2, {
+    idAuxAdmin: z.string().min(1, {
         message: "Username must be at least 2 characters.",
     }),
-    sexo: z.string().min(1, {
+    areaAsignada: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    direccion: z.string().min(2, {
+    tareasAsignadas: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    ultimaCita: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
-    }),
-    proximaCita: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
-    }) || z.null, 
 })
 
 export default function page() {
-    
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -74,33 +68,31 @@ export default function page() {
             correo: "",
             contrasena: "",
             rol: "",
-            idPaciente: "",
-            historialMedico: "",
-            numeroSeguro: "",
-            fechaNacimiento: "",
-            sexo: "",
-            direccion: "",
-            ultimaCita: "",
-            proximaCita: ""
+            idAdmin: "",
+            departamento: "",
+            nivelAcceso: "",
+            idAuxAdmin: "",
+            areaAsignada: "",
+            tareasAsignadas: ""
         },
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {       
-        const {idUsuario,...dataWithoutId} = values
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        const { idUsuario, ...dataWithoutId } = values
         try {
-            axios.post(`http://localhost:8080/administrador/pacientes`,dataWithoutId);
-            console.log("SE AGREGO PACIENTE");
+            axios.post(`http://localhost:8080/administrador/administradores`,dataWithoutId);
+            console.log("SE AAGREGO ADMINISTRADOR");
             window.location.href = "./"
         } catch (error) {
-            console.log("HUBO ERROR AL AGREGAR PACIENTE " + error)
+            console.log("HUBO ERROR AL AGREGAR ADMINISTRADOR " + error)
         }
     }
 
     return (
         <div className="flex items-center justify-center h-screen w-screen bg-gray-100">
             <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-                <h2 className="text-xl font-semibold text-center mb-4">Agregar Paciente</h2>
+                <h2 className="text-xl font-semibold text-center mb-4">Agregar Administrador</h2>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
                         <FormField
@@ -112,8 +104,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} readOnly />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -127,8 +118,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -142,8 +132,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -157,8 +146,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -172,8 +160,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -187,8 +174,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -202,8 +188,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -217,128 +202,91 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="idPaciente"
+                            name="idAdmin"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Id Paciente</FormLabel>
+                                    <FormLabel>ID Admin</FormLabel>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="historialMedico"
+                            name="departamento"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Historial Medico</FormLabel>
+                                    <FormLabel>Departamento</FormLabel>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="numeroSeguro"
+                            name="nivelAcceso"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Número de Seguro</FormLabel>
+                                    <FormLabel>Nivel de Acceso</FormLabel>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="fechaNacimiento"
+                            name="idAuxAdmin"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Fecha de Nacimiento</FormLabel>
+                                    <FormLabel>ID Auxiliar de Admin</FormLabel>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="sexo"
+                            name="areaAsignada"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Sexo</FormLabel>
+                                    <FormLabel>Área Asignada</FormLabel>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="direccion"
+                            name="tareasAsignadas"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Dirección</FormLabel>
+                                    <FormLabel>Tareas Asignadas</FormLabel>
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="ultimaCita"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Ultima Cita</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="proximaCita"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Proxima Cita</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -346,11 +294,9 @@ export default function page() {
                         <div className="col-span-2">
                             <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Agregar</Button>
                         </div>
-
                     </form>
                 </Form>
             </div>
         </div>
     )
 }
-

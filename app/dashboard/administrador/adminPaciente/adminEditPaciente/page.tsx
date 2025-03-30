@@ -99,7 +99,7 @@ export default function page({ dataInfo }: any) {
     return (
         <div className="flex items-center justify-center h-screen w-screen bg-gray-100">
             <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-                <h2 className="text-xl font-semibold text-center mb-4">Editar Médico</h2>
+                <h2 className="text-xl font-semibold text-center mb-4">Editar Paciente</h2>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
                         <FormField
@@ -343,7 +343,7 @@ export default function page({ dataInfo }: any) {
                             )}
                         />
                         <div className="col-span-2">
-                            <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Submit</Button>
+                            <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Actualizar</Button>
                         </div>
 
                     </form>

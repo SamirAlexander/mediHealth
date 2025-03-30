@@ -200,7 +200,7 @@ export default function ProfileForm({dataInfo}: any) {
                 )} />
                 <div className="col-span-2">
                     <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-                        Submit
+                        Actualizar
                     </Button>
                 </div>
             </form>

@@ -5,7 +5,6 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
-import { redirect } from "next/dist/server/api-utils"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -34,73 +33,65 @@ const formSchema = z.object({
     rol: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    idPaciente: z.string().min(1, {
+    idAdmin: z.number().min(1, {
         message: "Username must be at least 2 characters.",
     }),
-    historialMedico: z.string().min(2, {
+    departamento: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    numeroSeguro: z.string().min(2, {
+    nivelAcceso: z.string().min(1, {
         message: "Username must be at least 2 characters.",
     }),
-    fechaNacimiento: z.string().min(2, {
+    idAuxAdmin: z.number().min(1, {
         message: "Username must be at least 2 characters.",
     }),
-    sexo: z.string().min(1, {
+    areaAsignada: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    direccion: z.string().min(2, {
+    tareasAsignadas: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-    ultimaCita: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
-    }),
-    proximaCita: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
-    }) || z.null, 
 })
 
-export default function page() {
+export default function page({ dataInfo }: any) {
     
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            idUsuario: 1,
-            documentoIdentidad: "",
-            nombre: "",
-            apellido: "",
-            telefono: "",
-            correo: "",
-            contrasena: "",
-            rol: "",
-            idPaciente: "",
-            historialMedico: "",
-            numeroSeguro: "",
-            fechaNacimiento: "",
-            sexo: "",
-            direccion: "",
-            ultimaCita: "",
-            proximaCita: ""
+            idUsuario: dataInfo.idUsuario,
+            documentoIdentidad: dataInfo.documentoIdentidad,
+            nombre: dataInfo.nombre,
+            apellido: dataInfo.apellido,
+            telefono: dataInfo.telefono,
+            correo: dataInfo.correo,
+            contrasena: dataInfo.contrasena,
+            rol: dataInfo.rol,
+            idAdmin: dataInfo.idAdmin,
+            departamento: dataInfo.departamento,
+            nivelAcceso: dataInfo.nivelAcceso,
+            idAuxAdmin: dataInfo.idAuxAdmin,
+            areaAsignada: dataInfo.areaAsignada,
+            tareasAsignadas: dataInfo.tareasAsignadas,
         },
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {       
-        const {idUsuario,...dataWithoutId} = values
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        const { idUsuario, ...dataWithoutId } = values
         try {
-            axios.post(`http://localhost:8080/administrador/pacientes`,dataWithoutId);
-            console.log("SE AGREGO PACIENTE");
-            window.location.href = "./"
+            axios.put(`http://localhost:8080/administrador/administradores/${values.idUsuario}`, dataWithoutId);
+            console.log("SE GUARDÓ ADMINISTRADOR");
+            window.location.reload()
         } catch (error) {
-            console.log("HUBO ERROR AL AGREGAR PACIENTE " + error)
+            console.log("HUBO ERROR AL GUARDAR ADMINISTRADOR " + error)
         }
     }
 
     return (
         <div className="flex items-center justify-center h-screen w-screen bg-gray-100">
             <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-                <h2 className="text-xl font-semibold text-center mb-4">Agregar Paciente</h2>
+                <h2 className="text-xl font-semibold text-center mb-4">Editar Administrador</h2>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
                         <FormField
@@ -110,10 +101,9 @@ export default function page() {
                                 <FormItem>
                                     <FormLabel>ID Usuario</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} readOnly />
+                                        <Input placeholder="shadcn" {...field} readOnly />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -125,10 +115,9 @@ export default function page() {
                                 <FormItem>
                                     <FormLabel>Documento de Identidad</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -140,10 +129,9 @@ export default function page() {
                                 <FormItem>
                                     <FormLabel>Nombre</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -155,10 +143,9 @@ export default function page() {
                                 <FormItem>
                                     <FormLabel>Apellido</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -170,10 +157,9 @@ export default function page() {
                                 <FormItem>
                                     <FormLabel>Teléfono</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -185,10 +171,9 @@ export default function page() {
                                 <FormItem>
                                     <FormLabel>Correo</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -200,10 +185,9 @@ export default function page() {
                                 <FormItem>
                                     <FormLabel>Contraseña</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -215,142 +199,103 @@ export default function page() {
                                 <FormItem>
                                     <FormLabel>Rol</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="idPaciente"
+                            name="idAdmin"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Id Paciente</FormLabel>
+                                    <FormLabel>ID Admin</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="historialMedico"
+                            name="departamento"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Historial Medico</FormLabel>
+                                    <FormLabel>Departamento</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="numeroSeguro"
+                            name="nivelAcceso"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Número de Seguro</FormLabel>
+                                    <FormLabel>Nivel de Acceso</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="fechaNacimiento"
+                            name="idAuxAdmin"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Fecha de Nacimiento</FormLabel>
+                                    <FormLabel>ID Auxiliar de Admin</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="sexo"
+                            name="areaAsignada"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Sexo</FormLabel>
+                                    <FormLabel>Área Asignada</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <FormField
                             control={form.control}
-                            name="direccion"
+                            name="tareasAsignadas"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Dirección</FormLabel>
+                                    <FormLabel>Tareas Asignadas</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="" {...field} />
+                                        <Input placeholder="shadcn" {...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="ultimaCita"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Ultima Cita</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="proximaCita"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Proxima Cita</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                    </FormDescription>
+                                    <FormDescription></FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                         <div className="col-span-2">
-                            <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Agregar</Button>
+                            <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Actualizar</Button>
                         </div>
-
                     </form>
                 </Form>
             </div>
         </div>
     )
 }
-

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 
 // Esta es la definición del tipo de datos para los administradores
 export type Administrador = {
-  idUsuario: string
+  idUsuario: number
   documentoIdentidad: string
   nombre: string
   apellido: string
@@ -12,7 +12,7 @@ export type Administrador = {
   correo: string
   contrasena: string
   rol: string
-  idAdmin: string
+  idAdmin: number
   departamento: string
   nivelAcceso: string
   idAuxAdmin: string
