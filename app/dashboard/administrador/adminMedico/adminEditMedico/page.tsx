@@ -89,6 +89,7 @@ export default function ProfileForm({dataInfo}: any) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {    
     const { idUsuario, ...dataWithoutId } = values;    
+    console.log("ESTOY EN EDITAR MEDICO" +  dataWithoutId)
     axios.put(`http://localhost:8080/administrador/medicos/${values.idUsuario}`, dataWithoutId)
     window.location.reload()  
   }

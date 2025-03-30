@@ -3,30 +3,18 @@ import Link from 'next/link'
 import React from 'react'
 import { Paciente, columns } from "./columns"
 import { DataTable } from "./data-table"
- 
+import axios from 'axios'
+
 async function getData(): Promise<Paciente[]> {
   // Fetch data from your API here.
-  return [
-    {
-      idUsuario: "728ed52f",
-      documentoIdentidad: "12345678",
-      nombre: "Juan",
-      apellido: "Pérez",
-      telefono: "123-456-7890",
-      correo: "juan@example.com",
-      contrasena: "password123",
-      rol: "Paciente",
-      idpaciente: "1001",
-      historialMedico: "Historial médico de Juan",
-      numeroSeguro: "A123456789",
-      fechaNacimiento: "1990-01-01",
-      sexo: "Masculino",
-      direccion: "Calle Ficticia 123",
-      ultimacita: "2025-03-15",
-      proximacita: "2025-04-15",
-    },
-    // ...
-  ]  
+  try {
+    const response = await axios.get<Paciente[]>("http://localhost:8080/administrador/pacientes");
+    console.log("DATA RECIVIDA DE PACIENTE" + response);
+    return response.data
+  } catch (error) {
+    console.error("ERROR AL OBTENER DATA EN PACIENTE" + error)
+    return []
+  }
 }
 
 
@@ -35,13 +23,21 @@ export default async function page() {
   return (
     <div>
       <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
-    </div>
-      <Link href="../administrador">
-        <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
-        Administrador
-      </Button>
-      </Link>
+        <DataTable columns={columns} data={data} />
+      </div>
+      <div className="flex gap-[2vw]">
+        <Link href="../administrador">
+          <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
+            Administrador
+          </Button>
+        </Link>
+
+        <Link href="./adminPaciente/adminAgregarPaciente">
+          <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
+            Agregar
+          </Button>
+        </Link>
+      </div>
     </div>
   )
 }

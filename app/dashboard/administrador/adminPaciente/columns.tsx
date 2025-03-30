@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Paciente = {
-  idUsuario: string
+  idUsuario: number
   documentoIdentidad: string
   nombre: string
   apellido: string
@@ -13,7 +13,7 @@ export type Paciente = {
   correo: string
   contrasena: string
   rol: string
-  idpaciente: string
+  idpaciente: number
   historialMedico: string
   numeroSeguro: string
   fechaNacimiento: string

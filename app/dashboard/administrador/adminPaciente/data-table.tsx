@@ -15,10 +15,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import { PencilIcon, TrashIcon } from "lucide-react"
+import EditarPaciente from "./adminEditPaciente/page" 
+import { useState } from "react"
+import axios from "axios"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+ data : TData[]
 }
 
 export function DataTable<TData, TValue>({
@@ -31,8 +36,27 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   })
 
+  const [visible,setVisible] = useState<boolean>(true);
+  const [dataInfo,setDataInfo] = useState<TData>();
+  
+
+
+  function handleEdit(row:TData){
+    console.log("ESTOY OPRIMIENDO EL EDIT");
+    setVisible(!visible)
+    setDataInfo(row)
+        
+  }
+
+  function handleDelete(row: any){
+    axios.delete(`http://localhost:8080/administrador/pacientes/${row.idUsuario}`);
+    window.location.reload()
+    
+  }
+
   return (
     <div className="rounded-md border">
+      {visible ?
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -64,6 +88,15 @@ export function DataTable<TData, TValue>({
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
+                {/* Celda de acciones */}
+            <TableCell className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={() => handleEdit(row.original)}>
+                <PencilIcon className="w-4 h-4" />
+              </Button>
+              <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original)}>
+                <TrashIcon className="w-4 h-4" />
+              </Button>
+            </TableCell>
               </TableRow>
             ))
           ) : (
@@ -74,7 +107,9 @@ export function DataTable<TData, TValue>({
             </TableRow>
           )}
         </TableBody>
-      </Table>
+      </Table> :
+      <EditarPaciente dataInfo={dataInfo} />
+        }
     </div>
   )
 }
