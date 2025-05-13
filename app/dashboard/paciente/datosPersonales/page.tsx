@@ -25,13 +25,13 @@ const Personalinfo = () => {
         {/* Columna derecha */}
         <div className="p-8 space-y-2">
 
-          <div className="flex justify-center items-center bg-gray-200 rounded-lg border border-gray-300" style={{ height: '50%', width: '100%' }}>
+          <div className="flex justify-center items-center bg-gray-200 rounded-lg border border-gray-300" style={{ height: '35%', width: '100%' }}>
             <div className="">
               <img src="https://img.europapress.es/fotoweb/fotonoticia_20150331134913-15031252319_1200.jpg" alt="Patient Photograph" className="h-40 w-40 rounded-full border border-gray-400" />
             </div>
 
             <div>
-              <div className="p-8 space-y 1 border-r border-gray-200 pr 1">
+              <div className="p-8 space-y  border-r border-gray-200 pr 1">
                 <h3 className="text-lg font-semibold text-gray-700 text-center mb-6">Datos clínicos</h3>
                 <div className="space-y-3">
                   <div><label className="block text-sm font-medium text-gray-600">Número Seguro</label><p className="mt-1 text-gray-800">{datos?.paciente.numeroSeguro}</p></div>
@@ -63,7 +63,7 @@ const Personalinfo = () => {
                 <div><label className="block text-sm font-medium text-gray-600">Fecha de Nacimiento</label><p className="mt 2 text-gray-800">{datos?.paciente.fechaNacimiento}</p></div>
                 <div className="col-span-1 md:col-span-2 flex justify-end mt-2">
                   <Link href="/dashboard/paciente/editDatosPersonales">
-                    <Button className="text-sm px-5 py-5 bg-blue-500 text-white rounded hover:bg-blue-700 transition">Actualizar</Button>
+                    <Button className="text-sm px -5 py-5 bg-blue-500 text-white rounded hover:bg-blue-700 transition">Actualizar</Button>
                   </Link>
                 </div>
               </div>
