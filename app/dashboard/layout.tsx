@@ -5,6 +5,7 @@ import Link from "next/link";
 const links = [  
   { name: "Gestión de Citas", href: "gestiondecitas" },
   { name: "Historial Médico", href: "historialesmedicos" },
+  { name: "Paciente", href: "paciente" }, 
   { name: "Administrador", href: "administrador" } 
 ].sort((a, b) => a.name.localeCompare(b.name));
 
