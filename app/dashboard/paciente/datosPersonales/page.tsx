@@ -8,7 +8,7 @@ import axios from 'axios';
 const Personalinfo = () => {
   const [datos, setDatos] = useState<any>(null);
 
-  useEffect(() => {
+   useEffect(() => {
     axios.get('http://localhost:8080/paciente/datosPersonales/667788990')
       .then(response => {
         setDatos(response.data);        
@@ -16,7 +16,7 @@ const Personalinfo = () => {
       .catch(error => {
         console.error('Error al obtener los datos:', error);
       });
-  }, []);
+  }, []); 
 
   return (
     <div className="flex flex-col items-center bg-gray-100" style={{ height: '70vh', width: '81vw' }}>

@@ -58,7 +58,7 @@ export default function Page() {
   // Cargar datos del usuario cuando el componente se monte
   useEffect(() => {
     axios
-      .get("http://localhost:8080/paciente/datosPersonales/1") // Usa el ID correcto aquí
+      .get("http://localhost:8080/paciente/datosPersonales/667788990") // Usa el ID correcto aquí
       .then((response) => {
         setDataInfo(response.data);
         form.reset({
@@ -68,9 +68,9 @@ export default function Page() {
           apellido: response.data.apellido,
           telefono: response.data.telefono,
           correo: response.data.correo,
-          direccion: response.data.direccion,
-          sexo: response.data.sexo,
-          telefonoEmergencia: response.data.telefonoEmergencia,
+          direccion: response.data.paciente.direccion,
+          sexo: response.data.paciente.sexo,
+          telefonoEmergencia: response.data.paciente.historiaClinica.telefonoEmergencia,
           fechaNacimiento: response.data.correo,
           contrasena: "", // No mostrar contraseña real
           rol: "", // Si no se edita, dejar vacío o quitar del formulario
