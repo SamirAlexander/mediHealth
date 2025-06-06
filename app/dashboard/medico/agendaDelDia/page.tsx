@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 import {
   Card,
@@ -54,6 +55,7 @@ const AgendaMedica = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  console.log("LA AGENDA ES ESTA",agenda)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   const [isOpen, setIsOpen] = useState(true);
   const [open, setOpen] = useState(false);
@@ -101,20 +103,19 @@ const AgendaMedica = () => {
         const response = await axios.get(
           `http://localhost:8080/medico/agendaDelDia/${id}?fecha=2025-04-21`
         );
+        console.log("ESTA ES EL RESPONSE DEL ENDPOINTS", response)
 
         const citasMapeadas = response.data.map((cita: any) => ({
           pacienteNombre:
-            `${cita.pacienteNombre || ""} ${
-              cita.pacienteApellido || ""
-            }`.trim() || "Paciente no disponible",
+            `${cita.pacienteNombre || ""} ${cita.pacienteApellido || ""
+              }`.trim() || "Paciente no disponible",
           pacienteDocumentoIdentidad: cita.pacienteDocumentoIdentidad || "N/A",
           especialidad: cita.especialidad || "Especialidad no especificada",
           numeroConsultorio:
             cita.numeroConsultorio || "sin numero de consultorio",
           fechaHora: formatFechaHora(cita.fechaCita, cita.horaInicio),
-          historiaUrl: `/dashboard/medico/historiaClinica?documento=${
-            cita.pacienteDocumentoIdentidad || ""
-          }`,
+          historiaUrl: `/dashboard/medico/historiaClinica?documento=${cita.pacienteDocumentoIdentidad || ""
+            }`,
           estado: "Pendiente",
         }));
 
@@ -130,6 +131,7 @@ const AgendaMedica = () => {
 
     fetchAgenda();
   }, [id]);
+  
 
   const actualizarEstado = async (index: number, nuevoEstado: Estado) => {
     if (index < 0 || index >= agenda.length) {
@@ -147,7 +149,9 @@ const AgendaMedica = () => {
     agendaActualizada[index].estado = nuevoEstado;
     setAgenda(agendaActualizada);
 
-    try {
+    
+
+   /*  try {
       await axios.patch(
         `http://localhost:8080/medico/agendaDelDia/1?fecha=${encodeURIComponent(
           documento
@@ -162,7 +166,7 @@ const AgendaMedica = () => {
       );
     } catch (err) {
       console.error("Error al actualizar estado:", err);
-    }
+    } */
   };
 
   if (loading) {
@@ -177,16 +181,22 @@ const AgendaMedica = () => {
   return (
     <div>
       {isOpen ? (
-        <div className="flex items-center h-[70vh] justify-center bg-gray-100">
-          <div className="w-[30%] ">
-            <Card className="h-full">
+        <div className="flex items-center h-[70vh] justify-center bg-gray-100"
+          style={{
+            backgroundImage: "url('/images/professional.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}>
+          <div className="w-[30%]">
+            <Card className="h-full bg-teal-600">
               <CardHeader>
-                <CardTitle>Selección de Consultorio</CardTitle>
-                <CardDescription>
-                  Elegir consultorio asignado para la atención
+                <CardTitle>Consultorio</CardTitle>
+                <CardDescription className="text-white">
+                  Seleccione el consultorio asignado.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex-1">
+
+              <CardContent className="flex flex-col items-center">
                 <Popover open={open} onOpenChange={setOpen}>
                   <PopoverTrigger asChild>
                     <Button
@@ -197,26 +207,24 @@ const AgendaMedica = () => {
                     >
                       {value
                         ? frameworks.find(
-                            (framework) => framework.numeroConsultorio === value
-                          )?.numeroConsultorio
-                        : "Select framework..."}
-                      <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          (framework) => framework.numeroConsultorio === value
+                        )?.numeroConsultorio
+                        : "Seleccione un consultorio..."}
+                      <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50 " />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
+                  <PopoverContent className="w-[200px] p-0 ">
                     <Command>
-                      <CommandInput placeholder="Search framework..." />
+                      <CommandInput placeholder="Buscar..." />
                       <CommandList>
-                        <CommandEmpty>No framework found.</CommandEmpty>
+                        <CommandEmpty>No se encontró.</CommandEmpty>
                         <CommandGroup>
                           {frameworks.map((framework) => (
                             <CommandItem
                               key={framework.idConsultorio}
                               value={framework.idConsultorio}
                               onSelect={(currentValue) => {
-                                setValue(
-                                  currentValue === value ? "" : currentValue
-                                );
+                                setValue(currentValue === value ? "" : currentValue);
                                 setOpen(false);
                                 setId(framework.idConsultorio);
                               }}
@@ -238,23 +246,20 @@ const AgendaMedica = () => {
                   </PopoverContent>
                 </Popover>
               </CardContent>
+
               <CardFooter>
-                <div className="flex justify-end">
+                <div className="flex justify-center w-full gap-4">
                   <Link href="./">
-                    <Button
-                      
-                      className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80"
-                    >
+                    <Button className="rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
                       Cerrar
                     </Button>
                   </Link>
-                  {/* <Link href="medico/agendaDelDia"> */}
-                    <Button 
+                  <Button
                     onClick={toggleDropdown}
-                    className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
-                      Apceptar
-                    </Button>
-                  {/* </Link> */}
+                    className="rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80"
+                  >
+                    Aceptar
+                  </Button>
                 </div>
               </CardFooter>
             </Card>
