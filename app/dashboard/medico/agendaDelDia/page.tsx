@@ -59,6 +59,7 @@ const AgendaMedica = () => {
   console.log("LA AGENDA ES ESTA",agenda)
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   const [isOpen, setIsOpen] = useState(true);
+  const [visibleHistory, setVisibleHistory] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
   const [frameworks, setFramework] = useState<Framework[]>([]);
@@ -188,7 +189,9 @@ const AgendaMedica = () => {
 
   return (
     <div>
-      {isOpen ? (
+      {visibleHistory ? (<HistoriaClinica documentoIdentidad={documento} />) : (
+      
+      isOpen ? (
         <div className="flex items-center h-[70vh] justify-center bg-gray-100"
           style={{
             backgroundImage: "url('/images/professional.jpg')",
@@ -351,7 +354,9 @@ const AgendaMedica = () => {
                               <Button 
                                 variant="outline"
                                 className="bg-teal-600 text-white hover:bg-teal-700 px-4 py-2 rounded-md shadow-sm"
-                                onClick={()=>{setDocumento(cita.pacienteDocumentoIdentidad)}}
+                                onClick={()=>{setDocumento(cita.pacienteDocumentoIdentidad)
+                                  setVisibleHistory(true)
+                                }}
                                 >
                                 Ver Historia Clinica
                               </Button>
@@ -397,8 +402,8 @@ const AgendaMedica = () => {
             </div>
           </div>
         </div>
-      )}  
-      <HistoriaClinica documentoIdentidad={documento} />
+      ))}  
+      
 
     </div>
     
