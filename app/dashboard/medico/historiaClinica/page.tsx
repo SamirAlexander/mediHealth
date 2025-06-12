@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface RecordMedico {
   id: number;
@@ -13,102 +14,102 @@ interface RecordMedico {
   nombreMedico: string;
 }
 
-interface UsuarioPaciente {
+interface HistoriaClinicaData {
   idUsuario: number;
   documentoIdentidad: string;
   nombre: string;
   apellido: string;
   telefono: string;
   correo: string;
-}
-
-interface PacienteHistoria {
+  rol: string;
   idPaciente: number;
-  numeroSeguro: string;
+  historialMedico: string;
   fechaNacimiento: string;
   sexo: string;
   direccion: string;
   ultimaCita: string;
   proximaCita: string;
-  usuario: UsuarioPaciente;
-}
-
-interface HistoriaClinicaData {
-  id: number;
+  hcId: number;
   numeroHistoria: number;
-  pacienteId: string;
   fechaCreacion: string;
   contactoEmergencia: string;
   telefonoEmergencia: number | string;
-  recordsMedicos: RecordMedico[];
   antecedentesMedicos: string;
-  paciente: PacienteHistoria;
+  records: RecordMedico[];
 }
+
 
 interface Props {
-  historiaId: number;
-  onClose: () => void;
+  documentoIdentidad: string | null | undefined;
+  //onClose: () => void;
 }
 
-const HistoriaClinica: React.FC<Props> = ({ historiaId, onClose }) => {
+const HistoriaClinica: React.FC<Props> = ({ documentoIdentidad }) => {
   const [historia, setHistoria] = useState<HistoriaClinicaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
 
-console.log("ESTE ES EL ID DE HISTORIA CLINICA", historiaId)
+  /* setDocumentos(documentoIdentidad) */
 
-  useEffect(() => {
-    const fetchHistoriaClinica = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/medico/historiaClinicaP/${historiaId}`);
-        if (!response.ok) {
-          throw new Error('Error al obtener la historia clínica');
-        }
-        const data = await response.json();
-        setHistoria(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error desconocido');
-      } finally {
-        setLoading(false);
+ console.log("ESTO ES EL DOCUMENTO DE IDENTIDAD DEL HIJO LINEA 52",documentoIdentidad)
+
+
+
+ useEffect(() => {
+  const fetchHistoriaClinica = async () => {
+    if (!documentoIdentidad) return;
+
+    try {
+      const response = await axios.get<HistoriaClinicaData[]>(
+        `http://localhost:8080/medico/historiaClinicaP/documento/${documentoIdentidad}`
+      );
+
+      if (response.status !== 200 || !response.data) {
+        throw new Error('Error al obtener la historia clínica');
       }
-    };
 
-    fetchHistoriaClinica();
-  }, [historiaId]);
+      setHistoria(response.data[0]);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || err.message || 'Error en la solicitud');
+      } else {
+        setError(err instanceof Error ? err.message : 'Error desconocido');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (loading) {
-    return <div style={styles.loading}>Cargando historia clínica...</div>;
-  }
+  fetchHistoriaClinica();
+}, [documentoIdentidad]);
 
-  if (error) {
-    return <div style={styles.error}>Error: {error}</div>;
-  }
 
-  if (!historia) {
-    return <div style={styles.loading}>No se encontró la historia clínica</div>;
-  }
+  if (loading) return <div style={styles.loading}>Cargando historia clínica...</div>;
+  if (error) return <div style={styles.error}>Error: {error}</div>;
+  if (!historia) return <div style={styles.loading}>No se encontró la historia clínica</div>;
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>Historia Clínica #{historia.numeroHistoria}</h2>
-        <button style={styles.closeButton} onClick={onClose}>Cerrar</button>
+        {/* <button style={styles.closeButton} onClick={onClose}>Nuevo Registro</button> */}
       </div>
 
       <div style={styles.grid}>
         <div>
           <h3 style={styles.sectionTitle}>Datos del Paciente</h3>
-          <p><strong>Nombre:</strong> {historia.paciente.usuario.nombre} {historia.paciente.usuario.apellido}</p>
-          <p><strong>Documento:</strong> {historia.paciente.usuario.documentoIdentidad}</p>
-          <p><strong>Fecha de Nacimiento:</strong> {historia.paciente.fechaNacimiento}</p>
-          <p><strong>Sexo:</strong> {historia.paciente.sexo === 'M' ? 'Masculino' : 'Femenino'}</p>
+          <p><strong>Nombre:</strong> {historia.nombre} {historia.apellido}</p>
+          <p><strong>Documento:</strong> {historia.documentoIdentidad}</p>
+          <p><strong>Fecha de Nacimiento:</strong> {historia.fechaNacimiento}</p>
+          <p><strong>Sexo:</strong> {historia.sexo === 'M' ? 'Masculino' : 'Femenino'}</p>
         </div>
 
         <div>
           <h3 style={styles.sectionTitle}>Contacto</h3>
-          <p><strong>Teléfono:</strong> {historia.paciente.usuario.telefono}</p>
-          <p><strong>Correo:</strong> {historia.paciente.usuario.correo}</p>
-          <p><strong>Dirección:</strong> {historia.paciente.direccion}</p>
+          <p><strong>Teléfono:</strong> {historia.telefono}</p>
+          <p><strong>Correo:</strong> {historia.correo}</p>
+          <p><strong>Dirección:</strong> {historia.direccion}</p>
           <p><strong>Emergencia:</strong> {historia.contactoEmergencia} ({historia.telefonoEmergencia})</p>
         </div>
       </div>
@@ -117,18 +118,22 @@ console.log("ESTE ES EL ID DE HISTORIA CLINICA", historiaId)
         <h3 style={styles.sectionTitle}>Antecedentes Médicos</h3>
         <p>{historia.antecedentesMedicos || 'No registrado'}</p>
       </div>
+      <div style={{ marginBottom: 20 }}>
+        <h3 style={styles.sectionTitle}>Historial Médico General</h3>
+        <p>{historia.historialMedico || 'No registrado'}</p>
+      </div>
 
       <div>
         <div style={styles.registrosHeader}>
           <h3 style={styles.sectionTitle}>Registros Médicos</h3>
-          <span style={{ color: '#555' }}>{historia.recordsMedicos.length} registro(s)</span>
+          <span style={{ color: '#555' }}>{historia.records.length} registro(s)</span>
         </div>
 
-        {historia.recordsMedicos.length === 0 ? (
+        {historia.records.length === 0 ? (
           <p style={styles.noRegistros}>No hay registros médicos disponibles.</p>
         ) : (
           <div style={styles.registrosList}>
-            {historia.recordsMedicos.map((record) => (
+            {historia.records.map((record) => (
               <div key={record.id} style={styles.recordCard}>
                 <div style={styles.recordHeader}>
                   <strong>{record.fechaRegistro}</strong>
@@ -150,6 +155,7 @@ console.log("ESTE ES EL ID DE HISTORIA CLINICA", historiaId)
   );
 };
 
+// Tus estilos permanecen igual...
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     background: '#fff',

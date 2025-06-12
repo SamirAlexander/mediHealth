@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import HistoriaClinica from "../historiaClinica/page";
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -62,9 +63,12 @@ const AgendaMedica = () => {
   const [value, setValue] = useState("");
   const [frameworks, setFramework] = useState<Framework[]>([]);
   const [id, setId] = useState<string | null>(null);
+  const [documento, setDocumento ] = useState<string>();
 
   console.log("frameworkPruebaII:", value);
   console.log("frameworkPruebaIII:", id);
+  console.log("DOCUMENTO DE IDENTIDAD MODULO AGENDA:", documento);
+
 
   useEffect(() => {
     axios
@@ -149,6 +153,9 @@ const AgendaMedica = () => {
     agendaActualizada[index].estado = nuevoEstado;
     setAgenda(agendaActualizada);
 
+
+  
+
     
 
    /*  try {
@@ -169,6 +176,7 @@ const AgendaMedica = () => {
     } */
   };
 
+   
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -270,7 +278,7 @@ const AgendaMedica = () => {
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-3xl font-bold text-gray-800">
-                Agenda Médica Del Día
+                Agenda del Dia
               </h2>
               <Link href="/dashboard/medico" passHref>
                 <Button className="bg-gray-600 text-white hover:bg-gray-700 px-6 py-2 rounded-lg shadow-sm">
@@ -326,8 +334,8 @@ const AgendaMedica = () => {
                           <td className="px-6 py-4 whitespace-nowrap text-gray-800 font-medium">
                             {cita.pacienteNombre}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-gray-600">
-                            {cita.pacienteDocumentoIdentidad}
+                          <td id="pacienteDocumento" className="px-6 py-4 whitespace-nowrap text-gray-600">
+                            {cita.pacienteDocumentoIdentidad}                            
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-gray-600">
                             {cita.especialidad}
@@ -339,14 +347,15 @@ const AgendaMedica = () => {
                             {cita.fechaHora}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <Link href={cita.historiaUrl}>
-                              <Button
+                            {/* <Link href={cita.historiaUrl}> */}
+                              <Button 
                                 variant="outline"
                                 className="bg-teal-600 text-white hover:bg-teal-700 px-4 py-2 rounded-md shadow-sm"
-                              >
-                                Ver historia
+                                onClick={()=>{setDocumento(cita.pacienteDocumentoIdentidad)}}
+                                >
+                                Ver Historia Clinica
                               </Button>
-                            </Link>
+                            {/* </Link> */}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <select
@@ -355,13 +364,13 @@ const AgendaMedica = () => {
                                 actualizarEstado(
                                   index,
                                   e.target.value as Estado
-                                )
+                                )                              
                               }
                               className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 text-gray-700"
                             >
                               <option value="Pendiente">Pendiente</option>
-                              <option value="No asistió">No asistió</option>
-                              <option value="Realizado">Realizado</option>
+                              <option value="No asistió">No Asistio</option>
+                              <option value="Realizado">Realizada</option>
                             </select>
                           </td>
                         </tr>
@@ -388,8 +397,11 @@ const AgendaMedica = () => {
             </div>
           </div>
         </div>
-      )}
+      )}  
+      <HistoriaClinica documentoIdentidad={documento} />
+
     </div>
+    
   );
 };
 

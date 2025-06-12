@@ -40,7 +40,12 @@ const page = () => {
           <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
             Citas asignadas
           </Button>
-        </Link>            
+        </Link>     
+        <Link href="paciente/citasAsignadas">
+          <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
+            Historia Clinica
+          </Button>
+        </Link>          
       </div>
     </div>
   );

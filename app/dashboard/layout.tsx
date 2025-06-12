@@ -2,12 +2,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 
 
-const links = [  
+const links = [
   { name: "Gestión de Citas", href: "gestiondecitas" },
   { name: "Historial Médico", href: "historialesmedicos" },
-  { name: "Paciente", href: "paciente" }, 
-  { name: "Medico", href: "/dashboard/medico" }, 
-  { name: "Administrador", href: "administrador" } 
+  { name: "Paciente", href: "paciente" },
+  { name: "Medico", href: "/dashboard/medico" },
+  { name: "Administrador", href: "administrador" }
 ].sort((a, b) => a.name.localeCompare(b.name));
 
 export default function DashboardLayout({
@@ -91,14 +91,16 @@ export default function DashboardLayout({
                 <span className="self-center whitespace-nowrap ml-2">
                   {" "}
                   <Link href="/">
-                  MediHealth Center
+                    MediHealth Center
                   </Link>
                 </span>
               </a>
             </div>
-            <div className="text-4xl font-bold text-sky-500 text-center drop-shadow-md" >             
-              Centro Médico Integral              
+            <div className="text-4xl font-bold text-teal-700 text-center drop-shadow-md">
+              Centro Médico Integral
             </div>
+
+
             <div className="flex items-center">
               {/* User Avatar */}
               <Avatar>
