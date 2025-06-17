@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 interface RecordMedico {
   id: number;
@@ -38,52 +40,45 @@ interface HistoriaClinicaData {
   records: RecordMedico[];
 }
 
-
 interface Props {
   documentoIdentidad: string | null | undefined;
-  //onClose: () => void;
+  onNuevoRegistro?: () => void;
+  onVolver?: () => void;
 }
 
-const HistoriaClinica: React.FC<Props> = ({ documentoIdentidad }) => {
+const HistoriaClinica: React.FC<Props> = ({ documentoIdentidad, onNuevoRegistro, onVolver }) => {
   const [historia, setHistoria] = useState<HistoriaClinicaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
-
-  /* setDocumentos(documentoIdentidad) */
-
- console.log("ESTO ES EL DOCUMENTO DE IDENTIDAD DEL HIJO LINEA 52",documentoIdentidad)
 
 
+  useEffect(() => {
+    const fetchHistoriaClinica = async () => {
+      if (!documentoIdentidad) return;
 
- useEffect(() => {
-  const fetchHistoriaClinica = async () => {
-    if (!documentoIdentidad) return;
+      try {
+        const response = await axios.get<HistoriaClinicaData[]>(
+          `http://localhost:8080/medico/historiaClinicaP/documento/${documentoIdentidad}`
+        );
 
-    try {
-      const response = await axios.get<HistoriaClinicaData[]>(
-        `http://localhost:8080/medico/historiaClinicaP/documento/${documentoIdentidad}`
-      );
+        if (response.status !== 200 || !response.data) {
+          throw new Error('Error al obtener la historia clínica');
+        }
 
-      if (response.status !== 200 || !response.data) {
-        throw new Error('Error al obtener la historia clínica');
+        setHistoria(response.data[0]);
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data?.message || err.message || 'Error en la solicitud');
+        } else {
+          setError(err instanceof Error ? err.message : 'Error desconocido');
+        }
+      } finally {
+        setLoading(false);
       }
+    };
 
-      setHistoria(response.data[0]);
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message || err.message || 'Error en la solicitud');
-      } else {
-        setError(err instanceof Error ? err.message : 'Error desconocido');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchHistoriaClinica();
-}, [documentoIdentidad]);
-
+    fetchHistoriaClinica();
+  }, [documentoIdentidad]);
 
   if (loading) return <div style={styles.loading}>Cargando historia clínica...</div>;
   if (error) return <div style={styles.error}>Error: {error}</div>;
@@ -93,12 +88,22 @@ const HistoriaClinica: React.FC<Props> = ({ documentoIdentidad }) => {
     <div style={styles.container}>
       <div style={styles.header}>
         <h2 style={styles.title}>Historia Clínica #{historia.numeroHistoria}</h2>
-        {/* <button style={styles.closeButton} onClick={onClose}>Nuevo Registro</button> */}
+        <div>
+          <Link href={`/dashboard/medico/nuevoRecordMedico?hcId=${historia.hcId}`}>
+            <button style={styles.primaryButton}>+ Nuevo Registro</button>
+          </Link>
+
+          <Link href="/dashboard/medico" passHref>
+            <Button className="bg-gray-600 text-white hover:bg-gray-700 px-6 py-2 rounded-lg shadow-sm">
+              Volver al panel
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <div style={styles.grid}>
         <div>
-          <h3 style={styles.sectionTitle}>Datos del Paciente</h3>
+          <h3 style={{ ...styles.sectionTitle, color: '#0f766e', fontWeight: 'bold' }}>Datos del Paciente</h3>
           <p><strong>Nombre:</strong> {historia.nombre} {historia.apellido}</p>
           <p><strong>Documento:</strong> {historia.documentoIdentidad}</p>
           <p><strong>Fecha de Nacimiento:</strong> {historia.fechaNacimiento}</p>
@@ -106,7 +111,7 @@ const HistoriaClinica: React.FC<Props> = ({ documentoIdentidad }) => {
         </div>
 
         <div>
-          <h3 style={styles.sectionTitle}>Contacto</h3>
+          <h3 style={{ ...styles.sectionTitle, color: '#0f766e', fontWeight: 'bold' }}>Contacto</h3>
           <p><strong>Teléfono:</strong> {historia.telefono}</p>
           <p><strong>Correo:</strong> {historia.correo}</p>
           <p><strong>Dirección:</strong> {historia.direccion}</p>
@@ -115,17 +120,17 @@ const HistoriaClinica: React.FC<Props> = ({ documentoIdentidad }) => {
       </div>
 
       <div style={{ marginBottom: 20 }}>
-        <h3 style={styles.sectionTitle}>Antecedentes Médicos</h3>
+        <h3 style={{ ...styles.sectionTitle, color: '#0f766e', fontWeight: 'bold' }}>Antecedentes Médicos</h3>
         <p>{historia.antecedentesMedicos || 'No registrado'}</p>
       </div>
       <div style={{ marginBottom: 20 }}>
-        <h3 style={styles.sectionTitle}>Historial Médico General</h3>
+        <h3 style={{ ...styles.sectionTitle, color: '#0f766e', fontWeight: 'bold' }}>Historial Médico General</h3>
         <p>{historia.historialMedico || 'No registrado'}</p>
       </div>
 
       <div>
         <div style={styles.registrosHeader}>
-          <h3 style={styles.sectionTitle}>Registros Médicos</h3>
+          <h3 style={{ ...styles.sectionTitle, color: '#0f766e', fontWeight: 'bold' }}>Registros Médicos</h3>
           <span style={{ color: '#555' }}>{historia.records.length} registro(s)</span>
         </div>
 
@@ -155,16 +160,15 @@ const HistoriaClinica: React.FC<Props> = ({ documentoIdentidad }) => {
   );
 };
 
-// Tus estilos permanecen igual...
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
     background: '#fff',
     border: '1px solid #ddd',
     borderRadius: 10,
     padding: 25,
-    maxWidth: 800,
+    maxWidth: 900,
     margin: '30px auto',
-    boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+    boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
     fontFamily: 'Segoe UI, sans-serif',
   },
   header: {
@@ -174,18 +178,31 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: 25,
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     margin: 0,
     color: '#333',
+    fontWeight: 'bold',
   },
-  closeButton: {
-    backgroundColor: '#dc3545',
+  primaryButton: {
+    backgroundColor: '#0d9488',
     color: '#fff',
     border: 'none',
-    padding: '8px 16px',
+    padding: '8px 14px',
+    borderRadius: 6,
+    marginRight: 10,
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    transition: 'background-color 0.2s ease-in-out',
+  },
+  secondaryButton: {
+    backgroundColor: '#0f766e',
+    color: '#fff',
+    border: 'none',
+    padding: '8px 14px',
     borderRadius: 6,
     cursor: 'pointer',
     fontWeight: 'bold',
+    transition: 'background-color 0.2s ease-in-out',
   },
   grid: {
     display: 'grid',
@@ -198,7 +215,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     paddingBottom: 6,
     marginBottom: 12,
     fontSize: 18,
-    color: '#444',
   },
   registrosHeader: {
     display: 'flex',
@@ -229,7 +245,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     marginBottom: 10,
   },
   badge: {
-    backgroundColor: '#0d6efd',
+    backgroundColor: '#05A8BB',
     color: '#fff',
     padding: '4px 10px',
     borderRadius: 12,
