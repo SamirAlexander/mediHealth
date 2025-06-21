@@ -11,18 +11,24 @@ const page = () => {
   return (
     <div>
       <div
-        className="w-full h-[66vh] bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/administrador.jpg')" }}
+         className="w-full h-[68vh] relative"
+        style={{ 
+          backgroundImage: "url('/images/perfil_buen_administrador.jpg')",
+          backgroundSize: "100% 130%", // Ancho 35%, alto 50% (relativo al contenedor)
+          backgroundPosition: "center", // Centra la imagen reducida
+          backgroundRepeat: "no-repeat",
+          backgroundColor: "rgba(0, 0, 0, 0.3)", // Fondo opcional para espacios vacíos
+        }}
       >
         {/* Add content here if needed */}
-        <div className="pt-28 pl-5">
-          <h1 className="text-white text-3xl font-bold drop-shadow-lg">
+        <div className="pt-14 pl-5">
+          <h1 className="text-sky-900  text-3xl font-bold drop-shadow-lg">
             Modulo Administrador,
           </h1>
-          <h1 className="text-white text-3xl font-bold drop-shadow-lg">
-            Gestion Integral de los Procesos Medicos
+          <h1 className="text-sky-900 text-3xl font-bold drop-shadow-lg">
+          Gestión Integral de los Procesos Médicos
           </h1>
-          <p className="text-sky-500 text-lg mt-2">Dashboard Administrativo.</p>
+          <p className="text-sky-500 text-lg mt-2">Dashboard Administrador.</p>
         </div>
       </div>
       <div className="pl-56 rounded-lg p-2 flex flex-wrap gap-x-4 gap-y-2">
@@ -40,7 +46,12 @@ const page = () => {
           <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
             Administrar Administradores
           </Button>
-        </Link>            
+        </Link>      
+        <Link href="administrador/crearAgendar">
+          <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
+            Crear Agenda
+          </Button>
+        </Link>        
       </div>
     </div>
   );

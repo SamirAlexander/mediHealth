@@ -11,8 +11,14 @@ const page = () => {
   return (
     <div>
       <div
-        className="w-full h-[66vh] bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/pacientes.jpg')" }}
+        className="w-full h-[68vh] relative"
+        style={{ 
+          backgroundImage: "url('/images/sanitario.jpg')",
+          backgroundSize: "100% 132%", // Ancho 35%, alto 50% (relativo al contenedor)
+          backgroundPosition: "center", // Centra la imagen reducida
+          backgroundRepeat: "no-repeat",
+          backgroundColor: "rgba(0, 0, 0, 0.3)", // Fondo opcional para espacios vacíos
+        }}
       >
         {/* Add content here if needed */}
         <div className="pt-14 pl-5">
@@ -31,7 +37,7 @@ const page = () => {
             Datos personales
           </Button>
         </Link>
-        <Link href="paciente/asignacionCitas">
+        <Link href="paciente/asignacionCita">
           <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
             Asignación Citas
           </Button>
