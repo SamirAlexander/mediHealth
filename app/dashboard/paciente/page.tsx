@@ -22,10 +22,10 @@ const page = () => {
       >
         {/* Add content here if needed */}
         <div className="pt-14 pl-5">
-          <h1 className="text-sky-900  text-3xl font-bold drop-shadow-lg">
+          <h1 className="text-white text-3xl font-bold drop-shadow-lg">
             Modulo Paciente,
           </h1>
-          <h1 className="text-sky-900 text-3xl font-bold drop-shadow-lg">
+          <h1 className="text-white text-3xl font-bold drop-shadow-lg">
           Gestión Integral de los Procesos Médicos
           </h1>
           <p className="text-sky-500 text-lg mt-2">Dashboard Paciente.</p>

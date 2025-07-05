@@ -1,3 +1,4 @@
+"use client"; // This is a client component
 import Image from "next/image";
 import { redirect } from "next/navigation";
 

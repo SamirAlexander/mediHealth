@@ -1,3 +1,4 @@
+"use client"; // This is a client component
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 
@@ -54,10 +55,8 @@ export default function DashboardLayout({
                   ></path>
                 </svg>
               </button>
-              <a
-                href="#"
-                className="text-xl font-bold flex items-center lg:ml-2.5"
-              >
+                            
+
                 {/* Logo */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +93,7 @@ export default function DashboardLayout({
                     MediHealth Center
                   </Link>
                 </span>
-              </a>
+              
             </div>
             <div className="text-4xl font-bold text-teal-700 text-center drop-shadow-md">
               Centro Médico Integral
@@ -266,7 +265,7 @@ export default function DashboardLayout({
             </div>
           </footer>
           <p className="text-center text-sm text-gray-500 my-10">
-            &copy; 2019-{new Date().getFullYear()}{" "}
+            &copy; 2025-{new Date().getFullYear()}{" "}
             <a href="#" className="hover:underline" target="_blank">
               Themesberg
             </a>

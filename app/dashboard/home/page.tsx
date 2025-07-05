@@ -1,3 +1,4 @@
+"use client"; // This is a client component
 import {
   Card,
   CardContent,
@@ -15,8 +16,7 @@ export default function Page() {
       <div
         className="w-full h-[66vh] bg-cover bg-center"
         style={{ backgroundImage: "url('/images/enfermeras.jpg')" }}
-      >
-        {/* Add content here if needed */}
+      >      
         <div className="pt-28 pl-5">
           <h1 className="text-white text-3xl font-bold drop-shadow-lg">
             Cuidamos de Ti,
