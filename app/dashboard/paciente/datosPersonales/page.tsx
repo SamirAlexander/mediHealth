@@ -63,10 +63,11 @@ const Personalinfo = () => {
                 <div><label className="block text-sm font-medium text-gray-600">Fecha de Nacimiento</label><p className="mt 2 text-gray-800">{datos?.paciente.fechaNacimiento}</p></div>
                 <div className="flex justify-end space-y 15">
                   <Link href="/dashboard/paciente/editDatosPersonales">
-                    <Button className="text-sm px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition">
+                    <Button className="text-sm px-5 py-2 bg-teal-700 text-white rounded hover:bg-teal-800 transition">
                       Actualizar
                     </Button>
                   </Link>
+
                 </div>
               </div>
             </div>
