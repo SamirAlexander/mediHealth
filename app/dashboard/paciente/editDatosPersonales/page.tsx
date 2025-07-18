@@ -149,7 +149,7 @@ export default function Page() {
             <div className="col-span-2">
               <Button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-500 transition"
               >
                 Actualizar
               </Button>
@@ -167,4 +167,4 @@ export default function Page() {
       </div>
     </div>
   );
-}
+};
