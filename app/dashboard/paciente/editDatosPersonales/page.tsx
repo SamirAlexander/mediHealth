@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 // Esquema de validación con Zod
 const formSchema = z.object({
@@ -26,14 +27,17 @@ const formSchema = z.object({
   telefono: z.string().min(2, "Debe tener al menos 2 caracteres."),
   correo: z.string().email("Debe ser un correo válido."),
   direccion: z.string().min(2, "Debe tener al menos 2 caracteres."),
-  sexo: z.string().min(2, "Debe tener al menos 1 caracteres."),
+  sexo: z.string().min(1, "Debe tener al menos 1 caracter."),
   telefonoEmergencia: z.string().min(2, "Debe tener al menos 2 caracteres."),
   fechaNacimiento: z.string().min(2, "Debe tener al menos 2 caracteres."),
 });
 
-export default function Page() {
-  const [dataInfo, setDataInfo] = useState<any>(null);
+export default function EditDatosPersonales() {
+  const searchParams = useSearchParams();
+  const documento = searchParams.get("documento");
+
   const [mensajeExito, setMensajeExito] = useState("");
+  const [dataInfo, setDataInfo] = useState<any>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,43 +55,84 @@ export default function Page() {
     },
   });
 
-  // Cargar datos del usuario cuando el componente se monte
   useEffect(() => {
+    if (!documento) {
+      alert("Documento no especificado en la URL");
+      return;
+    }
+
     axios
-      .get("http://localhost:8080/paciente/datosPersonales/667788990")
+      .get(`http://localhost:8080/paciente/datosPersonales/${documento}`)
       .then((response) => {
-        setDataInfo(response.data);
+        const data = response.data;
+        setDataInfo(data);
         form.reset({
-          idUsuario: response.data.idUsuario,
-          documentoIdentidad: response.data.documentoIdentidad,
-          nombre: response.data.nombre,
-          apellido: response.data.apellido,
-          telefono: response.data.telefono,
-          correo: response.data.correo,
-          direccion: response.data.paciente.direccion,
-          sexo: response.data.paciente.sexo,
-          telefonoEmergencia:
-            response.data.paciente.historiaClinica.telefonoEmergencia,
-          fechaNacimiento: response.data.paciente.fechaNacimiento,
+          idUsuario: data.idUsuario,
+          documentoIdentidad: data.documentoIdentidad,
+          nombre: data.nombre,
+          apellido: data.apellido,
+          telefono: data.telefono,
+          correo: data.correo,
+          direccion: data.paciente?.direccion ?? "",
+          sexo: data.paciente?.sexo ?? "",
+          telefonoEmergencia: data.paciente?.historiaClinica?.telefonoEmergencia ?? "",
+          fechaNacimiento: data.paciente?.fechaNacimiento ?? "",
         });
       })
       .catch((error) => {
         console.error("Error al cargar los datos:", error);
+        alert("No se encontraron datos para el documento especificado.");
       });
-  }, [form]);
+  }, [documento, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { idUsuario, ...dataWithoutId } = values;
+    if (!dataInfo) {
+      alert("No hay datos cargados para actualizar.");
+      return;
+    }
 
     try {
+      const payload = {
+        idUsuario: values.idUsuario,
+        documentoIdentidad: values.documentoIdentidad,
+        nombre: values.nombre,
+        apellido: values.apellido,
+        telefono: values.telefono,
+        correo: values.correo,
+        contrasena: "", // si no actualizas contraseña, envía vacía o ajusta según backend
+        rol: "Paciente", // o el rol que corresponda
+        paciente: {
+          idPaciente: dataInfo.paciente?.idPaciente ?? null,
+          historialMedico: dataInfo.paciente?.historialMedico ?? null,
+          numeroSeguro: dataInfo.paciente?.numeroSeguro ?? "",
+          fechaNacimiento: values.fechaNacimiento,
+          sexo: values.sexo,
+          direccion: values.direccion,
+          ultimaCita: dataInfo.paciente?.ultimaCita ?? null,
+          proximaCita: dataInfo.paciente?.proximaCita ?? null,
+          historiaClinica: {
+            id: dataInfo.paciente?.historiaClinica?.id ?? null,
+            numeroHistoria: dataInfo.paciente?.historiaClinica?.numeroHistoria ?? null,
+            fechaCreacion: dataInfo.paciente?.historiaClinica?.fechaCreacion ?? null,
+            contactoEmergencia: dataInfo.paciente?.historiaClinica?.contactoEmergencia ?? "",
+            telefonoEmergencia: values.telefonoEmergencia,
+            antecedentesMedicos: dataInfo.paciente?.historiaClinica?.antecedentesMedicos ?? "",
+            recordsMedicos: dataInfo.paciente?.historiaClinica?.recordsMedicos ?? [],
+          },
+        },
+        administrador: null,
+        medico: null,
+      };
+
       await axios.put(
-        `http://localhost:8080/paciente/datosPersonales/${idUsuario}`,
-        dataWithoutId
+        `http://localhost:8080/paciente/datosPersonales/${values.documentoIdentidad}`,
+        payload
       );
       setMensajeExito("✅ Datos personales actualizados correctamente.");
-      setTimeout(() => setMensajeExito(""), 5000); // Borra el mensaje después de 5 segundos
+      setTimeout(() => setMensajeExito(""), 5000);
     } catch (error) {
-      console.log("Hubo un error al guardar los datos:", error);
+      console.error("Error al actualizar datos:", error);
+      alert("Error al actualizar datos.");
     }
   };
 
@@ -98,7 +143,6 @@ export default function Page() {
           Editar Datos Personales
         </h2>
 
-        {/* Mensaje de éxito */}
         {mensajeExito && (
           <div className="mb-4 text-green-700 bg-green-100 border border-green-300 p-2 rounded text-center">
             {mensajeExito}
@@ -110,24 +154,16 @@ export default function Page() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid grid-cols-2 gap-4"
           >
-            {/* Campos del formulario */}
             {[
               { name: "idUsuario", label: "ID Usuario", readOnly: true },
-              {
-                name: "documentoIdentidad",
-                label: "Documento Identidad",
-                readOnly: true,
-              },
+              { name: "documentoIdentidad", label: "Documento Identidad", readOnly: true },
               { name: "nombre", label: "Nombre" },
               { name: "apellido", label: "Apellido" },
               { name: "telefono", label: "Teléfono" },
               { name: "correo", label: "Correo" },
               { name: "direccion", label: "Dirección" },
               { name: "sexo", label: "Sexo" },
-              {
-                name: "telefonoEmergencia",
-                label: "Teléfono de Emergencia",
-              },
+              { name: "telefonoEmergencia", label: "Teléfono de Emergencia" },
               { name: "fechaNacimiento", label: "Fecha Nacimiento" },
             ].map(({ name, label, readOnly = false }) => (
               <FormField
@@ -149,14 +185,14 @@ export default function Page() {
             <div className="col-span-2">
               <Button
                 type="submit"
-                className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-500 transition"
+                className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-800 transition"
               >
                 Actualizar
               </Button>
             </div>
 
             <div className="flex col-span-2 justify-end">
-              <Link href="/dashboard/paciente/datosPersonales">
+              <Link href={`/dashboard/paciente?documento=${documento}`}>
                 <Button className="mt-2 bg-gray-500 text-white hover:bg-gray-600">
                   Volver
                 </Button>
@@ -167,4 +203,4 @@ export default function Page() {
       </div>
     </div>
   );
-};
+}

@@ -45,6 +45,7 @@ export default function SeleccionarCita() {
   const [fecha, setFecha] = useState("");
   const [idConsultorio, setIdConsultorio] = useState("");
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [mensajeSinCitas, setMensajeSinCitas] = useState("");
 
   const buscarPacientePorDocumento = async () => {
     try {
@@ -53,7 +54,7 @@ export default function SeleccionarCita() {
       setIdPaciente(data.idPaciente);
       setNombre(data.nombre);
       setApellido(data.apellido);
-      setDocumentoPaciente(data.documento_identidad); // <- Ajustado aquí
+      setDocumentoPaciente(data.documento_identidad);
     } catch (error) {
       console.error("No se encontró el paciente", error);
       alert("❌ Documento no encontrado en el sistema.");
@@ -73,8 +74,15 @@ export default function SeleccionarCita() {
         params: { fecha, idConsultorio: consultorioNum }
       });
       setCitasDisponibles(response.data);
+
+      if (response.data.length === 0) {
+        setMensajeSinCitas("No hay citas disponibles para esta fecha.");
+      } else {
+        setMensajeSinCitas("");
+      }
     } catch (error) {
       console.error("Error al cargar las citas disponibles", error);
+      setMensajeSinCitas("Error al buscar las citas.");
     }
   };
 
@@ -140,7 +148,7 @@ export default function SeleccionarCita() {
         </Button>
       </div>
 
-      {/* Mostrar datos del paciente solo si se encontró */}
+      {/* Mostrar datos del paciente */}
       {idPaciente && (
         <div className="flex flex-wrap gap-x-6 gap-y-2 items-center bg-white border border-gray-200 px-4 py-2 rounded shadow-sm max-w-5xl">
           <div>
@@ -162,7 +170,7 @@ export default function SeleccionarCita() {
         </div>
       )}
 
-      {/* Filtros para citas disponibles */}
+      {/* Filtros para buscar citas */}
       {idPaciente && (
         <div className="flex flex-wrap gap-4 items-end pt-4">
           <div>
@@ -197,6 +205,10 @@ export default function SeleccionarCita() {
               Volver
             </Button>
           </Link>
+          {/* Mensaje si no hay citas */}
+          {mensajeSinCitas && (
+            <p className="text-teal-700 font-semibold pt-2 w-full">{mensajeSinCitas}</p>
+          )}
         </div>
       )}
 
