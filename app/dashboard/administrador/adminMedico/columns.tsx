@@ -2,8 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+// Tipo para datos de médico
 export type Medico = {
   idUsuario: string;
   documentoIdentidad: string;
@@ -21,62 +20,88 @@ export type Medico = {
   noConsultorio: string;
 };
 
+const headerStyle = {
+  color: "#0f766e", // teal-700
+  fontWeight: "700",
+  fontSize: "1rem",
+  textAlign: "center" as const, // <-- centrado horizontal
+  display: "block", // para que textAlign funcione bien en span
+};
+
 export const columns: ColumnDef<Medico>[] = [
-  
   {
     accessorKey: "usuario.idUsuario",
-    header: "id Usuario",
+    header: () => <span style={headerStyle}>ID Usuario</span>,
   },
   {
     accessorKey: "usuario.documentoIdentidad",
-    header: "Documento",
+    header: () => <span style={headerStyle}>Documento</span>,
   },
   {
     accessorKey: "usuario.nombre",
-    header: "Nombre",
+    header: () => <span style={headerStyle}>Nombre</span>,
   },
   {
     accessorKey: "usuario.apellido",
-    header: "Apellido",
+    header: () => <span style={headerStyle}>Apellido</span>,
   },
   {
     accessorKey: "usuario.telefono",
-    header: "Telefono",
+    header: () => <span style={headerStyle}>Teléfono</span>,
+  },
+  {
+    accessorKey: "usuario.correo",
+    header: () => <span style={headerStyle}>Correo</span>,
   },
   {
     accessorKey: "usuario.contrasena",
-    header: "Contraseña",
+    header: () => <span style={headerStyle}>Contraseña</span>,
   },
   {
     accessorKey: "usuario.rol",
-    header: "Rol",
+    header: () => <span style={headerStyle}>Rol</span>,
+    cell: ({ getValue }) => {
+      const rol = getValue() as string;
+      return (
+        <span
+          style={{
+            backgroundColor: "#0f766e", // teal-700
+            color: "white",
+            padding: "2px 8px",
+            borderRadius: "9999px",
+            fontSize: "0.75rem",
+            fontWeight: "600",
+            display: "inline-block",
+            textTransform: "capitalize",
+          }}
+        >
+          {rol}
+        </span>
+      );
+    },
   },
   {
-    accessorKey: "usuario.idMedico",
-    header: "Id Medico",
+    accessorKey: "idMedico",
+    header: () => <span style={headerStyle}>ID Médico</span>,
   },
   {
     accessorKey: "dependencia",
-    header: "Dependencia",
+    header: () => <span style={headerStyle}>Dependencia</span>,
   },
   {
     accessorKey: "horarioTrabajo",
-    header: "Horario de Trabajo",
+    header: () => <span style={headerStyle}>Horario de Trabajo</span>,
   },
   {
     accessorKey: "numeroLicencia",
-    header: "Numero Licencia",
+    header: () => <span style={headerStyle}>Número Licencia</span>,
   },
   {
     accessorKey: "especialidad",
-    header: "Area de Especializacion",
+    header: () => <span style={headerStyle}>Área de Especialización</span>,
   },
   {
     accessorKey: "noConsultorio",
-    header: "No. de Consultorio",
-  },
-  {
-    //accessorKey: "noConsultorio",
-    header: "Edicion",
-  },
+    header: () => <span style={headerStyle}>No. de Consultorio</span>,
+  },  
 ];
