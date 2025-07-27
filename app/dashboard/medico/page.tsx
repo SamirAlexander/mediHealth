@@ -42,12 +42,7 @@ const page = () => {
             >
               Agenda del dia
             </Button>
-            </Link>
-            <Link href="medico/agendaSemanal">
-              <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
-                Agenda Semanal
-              </Button>
-            </Link>
+            </Link>            
             <Link href="medico/citaExtra">
               <Button className="mt-0 rounded-lg bg-primary text-white px-6 py-3 text-lg font-medium tracking-wide shadow-md hover:shadow-lg transition-all hover:bg-primary/80">
                 Cita Extra

@@ -26,12 +26,7 @@ export default function Page() {
           </h1>
           <p className="text-sky-500 text-lg mt-2">
             Atención médica integral con calidad, confianza y calidez humana.
-          </p>
-          <div className="pl-56">
-            <Link href="/dashboard/gestiondecitas">
-              <Button className="mt-5">Agendar Cita</Button>
-            </Link>
-          </div>
+          </p>          
         </div>
       </div>
       <div className="flex justify-between p-10">

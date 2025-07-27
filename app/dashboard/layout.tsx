@@ -3,9 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 
 
-const links = [
-  { name: "Gestión de Citas", href: "gestiondecitas" },
-  { name: "Historial Médico", href: "historialesmedicos" },
+const links = [  
   { name: "Paciente", href: "paciente" },
   { name: "Medico", href: "/dashboard/medico" },
   { name: "Administrador", href: "administrador" }
