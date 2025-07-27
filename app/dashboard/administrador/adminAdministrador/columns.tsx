@@ -22,31 +22,31 @@ export type Administrador = {
 
 export const columns: ColumnDef<Administrador>[] = [
   {
-    accessorKey: "idUsuario",
+    accessorKey: "usuario.idUsuario",
     header: "ID Usuario",
   },
   {
-    accessorKey: "documentoIdentidad",
+    accessorKey: "usuario.documentoIdentidad",
     header: "Documento de Identidad",
   },
   {
-    accessorKey: "nombre",
+    accessorKey: "usuario.nombre",
     header: "Nombre",
   },
   {
-    accessorKey: "apellido",
+    accessorKey: "usuario.apellido",
     header: "Apellido",
   },
   {
-    accessorKey: "telefono",
+    accessorKey: "usuario.telefono",
     header: "Teléfono",
   },
   {
-    accessorKey: "correo",
+    accessorKey: "usuario.correo",
     header: "Correo",
   },
   {
-    accessorKey: "contrasena",
+    accessorKey: "usuario.contrasena",
     header: "Contraseña",
   },
   {
@@ -66,7 +66,7 @@ export const columns: ColumnDef<Administrador>[] = [
     header: "Nivel de Acceso",
   },
   {
-    accessorKey: "idAuxAdmin",
+    accessorKey: "idAdmin",
     header: "ID Auxiliar Administrador",
   },
   {

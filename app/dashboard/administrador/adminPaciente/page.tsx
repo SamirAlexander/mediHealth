@@ -6,7 +6,7 @@ import { DataTable } from "./data-table"
 import axios from 'axios'
 
 async function getData(): Promise<Paciente[]> {
-  // Fetch data from your API here.
+  
   try {
     const response = await axios.get<Paciente[]>("http://localhost:8080/administrador/pacientes");
     console.log("DATA RECIVIDA DE PACIENTE" + response);

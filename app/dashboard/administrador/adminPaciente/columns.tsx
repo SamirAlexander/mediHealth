@@ -25,43 +25,43 @@ export type Paciente = {
 
 export const columns: ColumnDef<Paciente>[] = [
   {
-    accessorKey: "idUsuario",
+    accessorKey: "idPaciente",
     header: "ID Usuario",
   },
   {
-    accessorKey: "documentoIdentidad",
+    accessorKey: "usuario.documentoIdentidad",
     header: "Documento de Identidad",
   },
   {
-    accessorKey: "nombre",
+    accessorKey: "usuario.nombre",
     header: "Nombre",
   },
   {
-    accessorKey: "apellido",
+    accessorKey: "usuario.apellido",
     header: "Apellido",
   },
   {
-    accessorKey: "telefono",
+    accessorKey: "usuario.telefono",
     header: "Teléfono",
   },
   {
-    accessorKey: "correo",
+    accessorKey: "usuario.correo",
     header: "Correo",
   },
   {
-    accessorKey: "contrasena",
+    accessorKey: "usuario.contrasena",
     header: "Contraseña",
   },
   {
-    accessorKey: "rol",
+    accessorKey: "usuario.rol",
     header: "Rol",
   },
   {
-    accessorKey: "idpaciente",
+    accessorKey: "usuario.idUsuario",
     header: "ID Paciente",
   },
   {
-    accessorKey: "historialMedico",
+    accessorKey: "historiaClinica.numeroHistoria",
     header: "Historial Médico",
   },
   {
@@ -81,11 +81,11 @@ export const columns: ColumnDef<Paciente>[] = [
     header: "Dirección",
   },
   {
-    accessorKey: "ultimacita",
+    accessorKey: "ultimaCita",
     header: "Última Cita",
   },
   {
-    accessorKey: "proximacita",
+    accessorKey: "proximaCita",
     header: "Próxima Cita",
   },
 ]

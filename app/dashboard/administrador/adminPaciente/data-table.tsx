@@ -26,6 +26,9 @@ interface DataTableProps<TData, TValue> {
  data : TData[]
 }
 
+
+
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -36,9 +39,12 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   })
 
+  
+
   const [visible,setVisible] = useState<boolean>(true);
   const [dataInfo,setDataInfo] = useState<TData>();
-  
+
+   
 
 
   function handleEdit(row:TData){

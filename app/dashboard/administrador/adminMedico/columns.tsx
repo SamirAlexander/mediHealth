@@ -24,35 +24,35 @@ export type Medico = {
 export const columns: ColumnDef<Medico>[] = [
   
   {
-    accessorKey: "idUsuario",
+    accessorKey: "usuario.idUsuario",
     header: "id Usuario",
   },
   {
-    accessorKey: "documentoIdentidad",
+    accessorKey: "usuario.documentoIdentidad",
     header: "Documento",
   },
   {
-    accessorKey: "nombre",
+    accessorKey: "usuario.nombre",
     header: "Nombre",
   },
   {
-    accessorKey: "apellido",
+    accessorKey: "usuario.apellido",
     header: "Apellido",
   },
   {
-    accessorKey: "telefono",
+    accessorKey: "usuario.telefono",
     header: "Telefono",
   },
   {
-    accessorKey: "contrasena",
+    accessorKey: "usuario.contrasena",
     header: "Contraseña",
   },
   {
-    accessorKey: "rol",
+    accessorKey: "usuario.rol",
     header: "Rol",
   },
   {
-    accessorKey: "idMedico",
+    accessorKey: "usuario.idMedico",
     header: "Id Medico",
   },
   {
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Medico>[] = [
     header: "Numero Licencia",
   },
   {
-    accessorKey: "areaEspecializacion",
+    accessorKey: "especialidad",
     header: "Area de Especializacion",
   },
   {
