@@ -1,5 +1,11 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,14 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useEffect, useState } from "react";
 
-// Esquema de validación con Zod
 const formSchema = z.object({
   idUsuario: z.number(),
   documentoIdentidad: z.string().min(2, "Debe tener al menos 2 caracteres."),
@@ -28,7 +27,9 @@ const formSchema = z.object({
 });
 
 export default function Page() {
-  const [dataInfo, setDataInfo] = useState<any>(null);
+  const searchParams = useSearchParams();
+  const documentoQuery = searchParams.get("documento") || "";
+
   const [mensajeExito, setMensajeExito] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,37 +44,37 @@ export default function Page() {
     },
   });
 
-  // Cargar datos del usuario cuando el componente se monte
   useEffect(() => {
+    if (!documentoQuery) return;
+
     axios
-      .get("http://localhost:8080/medico/datossPersonales/444000999")
+      .get(`http://localhost:8080/medico/datossPersonales/${documentoQuery}`)
       .then((response) => {
-        setDataInfo(response.data);
+        const data = response.data;
         form.reset({
-          idUsuario: response.data.idUsuario,
-          documentoIdentidad: response.data.documentoIdentidad,
-          nombre: response.data.nombre,
-          apellido: response.data.apellido,
-          telefono: response.data.telefono,
-          correo: response.data.correo,
+          idUsuario: data.idUsuario,
+          documentoIdentidad: data.documentoIdentidad,
+          nombre: data.nombre,
+          apellido: data.apellido,
+          telefono: data.telefono,
+          correo: data.correo,
         });
       })
       .catch((error) => {
         console.error("Error al cargar los datos:", error);
       });
-  }, [form]);
+  }, [documentoQuery, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { documentoIdentidad, ...dataWithoutDoc } = values;
-
     try {
       await axios.put(
-        `http://localhost:8080/medico/datossPersonales/${documentoIdentidad}`,
-        dataWithoutDoc,
+        `http://localhost:8080/medico/datossPersonales/${values.documentoIdentidad}`,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          idUsuario: values.idUsuario,
+          nombre: values.nombre,
+          apellido: values.apellido,
+          telefono: values.telefono,
+          correo: values.correo,
         }
       );
       setMensajeExito("✅ Datos personales actualizados correctamente.");
@@ -86,9 +87,7 @@ export default function Page() {
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-64px)] w-full bg-gray-100 pt-4 pb-8">
       <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-        <h2 className="text-xl font-semibold text-center mb-4">
-          Editar Datos Personales
-        </h2>
+        <h2 className="text-xl font-semibold text-center mb-4">Editar Datos Personales</h2>
 
         {/* Mensaje de éxito */}
         {mensajeExito && (
@@ -102,14 +101,9 @@ export default function Page() {
             onSubmit={form.handleSubmit(onSubmit)}
             className="grid grid-cols-2 gap-4"
           >
-            {/* Campos del formulario */}
             {[
               { name: "idUsuario", label: "ID Usuario", readOnly: true },
-              {
-                name: "documentoIdentidad",
-                label: "Documento Identidad",
-                readOnly: true,
-              },
+              { name: "documentoIdentidad", label: "Documento Identidad", readOnly: true },
               { name: "nombre", label: "Nombre" },
               { name: "apellido", label: "Apellido" },
               { name: "telefono", label: "Teléfono" },
@@ -141,11 +135,12 @@ export default function Page() {
             </div>
 
             <div className="flex col-span-2 justify-end">
-              <Link href="/dashboard/medico/datossPersonales">
-                <Button className="mt-2 bg-gray-500 text-white hover:bg-gray-600">
-                  Volver
-                </Button>
-              </Link>
+              <Button
+                onClick={() => window.history.back()}
+                className="mt-2 bg-gray-500 text-white hover:bg-gray-600"
+              >
+                Volver
+              </Button>
             </div>
           </form>
         </Form>

@@ -7,7 +7,8 @@ import axios from "axios";
 import HistoriaClinica from "../historiaClinica/page";
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import {
   Card,
   CardContent,
@@ -105,8 +106,14 @@ const AgendaMedica = () => {
         setLoading(true);
         setError(null);
 
+        const today = new Date();
+        const year = today.getFullYear()
+        const month = String(today.getMonth() + 1).padStart(2,"0")
+        const day = String(today.getDate()).padStart(2,"0")       
+
+        
         const response = await axios.get(
-          `http://localhost:8080/medico/agendaDelDia/${id}?fecha=2025-04-21`
+          `http://localhost:8080/medico/agendaDelDia/${id}?fecha=${year}-${month}-${day}`
         );
         console.log("ESTA ES EL RESPONSE DEL ENDPOINTS", response)
 
@@ -153,28 +160,6 @@ const AgendaMedica = () => {
     const agendaActualizada = [...agenda];
     agendaActualizada[index].estado = nuevoEstado;
     setAgenda(agendaActualizada);
-
-
-  
-
-    
-
-   /*  try {
-      await axios.patch(
-        `http://localhost:8080/medico/agendaDelDia/1?fecha=${encodeURIComponent(
-          documento
-        )}`,
-        { estado: nuevoEstado },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-    } catch (err) {
-      console.error("Error al actualizar estado:", err);
-    } */
   };
 
    
@@ -393,13 +378,7 @@ const AgendaMedica = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
-
-            <div className="mt-8 flex justify-end">
-              <Button className="bg-teal-600 text-white hover:bg-teal-700 px-6 py-2 rounded-lg shadow-sm">
-                Cita Extra
-              </Button>
-            </div>
+            </div>            
           </div>
         </div>
       ))}  
