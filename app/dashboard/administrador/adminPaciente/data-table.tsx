@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { PencilIcon, TrashIcon } from "lucide-react"
+import { PencilIcon, TrashIcon, FolderIcon } from "lucide-react"
 import EditarPaciente from "./adminEditPaciente/page" 
 import { useState } from "react"
 import axios from "axios"
@@ -50,8 +50,14 @@ export function DataTable<TData, TValue>({
   function handleEdit(row:TData){
     console.log("ESTOY OPRIMIENDO EL EDIT");
     setVisible(!visible)
-    setDataInfo(row)
-        
+    setDataInfo(row)        
+  }
+
+  function handleAddMedicarHistory(row:TData){
+    console.log("ESTOY OPRIMIENDO EL AGREGAR HISTORIAL");   
+    console.log(row) 
+    // Aquí podrías agregar lógica para manejar el historial médico
+    // Por ejemplo, redirigir a una página de historial médico o abrir un modal
   }
 
   function handleDelete(row: any){
@@ -99,9 +105,12 @@ export function DataTable<TData, TValue>({
               <Button variant="outline" size="sm" onClick={() => handleEdit(row.original)}>
                 <PencilIcon className="w-4 h-4" />
               </Button>
+              <Button variant="outline" size="sm" onClick={() => handleAddMedicarHistory(row.original)}>
+                <FolderIcon className="w-4 h-4" />
+              </Button>
               <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original)}>
                 <TrashIcon className="w-4 h-4" />
-              </Button>
+              </Button>              
             </TableCell>
               </TableRow>
             ))
