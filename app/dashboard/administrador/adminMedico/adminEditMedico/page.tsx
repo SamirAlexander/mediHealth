@@ -113,7 +113,7 @@ export default function ProfileForm({ dataInfo }: any) {
         {/* Título centrado debajo del botón */}
         <div className="flex justify-center mb-6">
           <h2 className="text-xl font-semibold text-teal-700 text-center">
-            Agregar Médico
+            Editar Médico
           </h2>
         </div>
         <Form {...form}>
