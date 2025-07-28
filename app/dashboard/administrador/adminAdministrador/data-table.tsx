@@ -90,10 +90,17 @@ export function DataTable<TData, TValue>({
                   ))}
                   {/* Celda de acciones */}
                   <TableCell className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(row.original)}>
-                      <PencilIcon className="w-4 h-4" />
+                    <Button
+                      onClick={() => handleEdit(row.original)}
+                      className="bg-[#0f766e] hover:bg-[#115e56] text-white text-sm px-2 py-2 rounded-md"
+                    >
+                      <PencilIcon className="w-5 h-5 mr-1" />                      
                     </Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original)}>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(row.original)}
+                    >
                       <TrashIcon className="w-4 h-4" />
                     </Button>
                   </TableCell>

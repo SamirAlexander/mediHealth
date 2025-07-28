@@ -90,9 +90,28 @@ export default function ProfileForm() {
     }
 
     return (
-        <div className="flex items-center justify-center h-screen w-screen bg-gray-100">
+        <div className="flex justify-center items-start min-h-screen bg-gray-100 py-8">
             <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-                <h2 className="text-xl font-semibold text-center mb-4">Agregar Médico</h2>
+                {/* Botón volver arriba derecha */}
+                <div className="flex justify-end mb-2">
+                    <Button
+                        type="button"
+                        onClick={() =>
+                        (window.location.href =
+                            "http://localhost:3000/dashboard/administrador/adminMedico")
+                        }
+                        className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition"
+                    >
+                        Volver
+                    </Button>
+                </div>
+
+                {/* Título centrado debajo del botón */}
+                <div className="flex justify-center mb-6">
+                    <h2 className="text-xl font-semibold text-teal-700 text-center">
+                        Agregar Médico
+                    </h2>
+                </div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
                         <FormField control={form.control} name="idUsuario" render={({ field }) => (
@@ -194,7 +213,10 @@ export default function ProfileForm() {
                             </FormItem>
                         )} />
                         <div className="col-span-2">
-                            <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                            <Button
+                                type="submit"
+                                className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-800 transition"
+                            >
                                 Agregar
                             </Button>
                         </div>

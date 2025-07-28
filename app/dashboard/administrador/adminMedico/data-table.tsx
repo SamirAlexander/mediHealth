@@ -43,71 +43,78 @@ export function DataTable<TData, TValue>({
     // Implement your edit logic here
     setVisible(!visible)
     setdataInfo(row)
-    
+
   }
 
   function handleDelete(row: any) {
     axios.delete(`http://localhost:8080/administrador/medicos/${row.idUsuario}`)
     window.location.reload()
-    
+
 
   }
 
   return (
     <div className="rounded-md border">
       {visible ?
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                  </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-                {/* Celda de acciones */}
-            <TableCell className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => handleEdit(row.original)}>
-                <PencilIcon className="w-4 h-4" />
-              </Button>
-              <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original)}>
-                <TrashIcon className="w-4 h-4" />
-              </Button>
-            </TableCell>
+                    </TableHead>
+                  )
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table> 
-      : <EditMedico dataInfo={dataInfo} />}      
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                  {/* Celda de acciones */}
+                  <TableCell className="flex gap-2">
+                    <Button
+                      onClick={() => handleEdit(row.original)}
+                      className="bg-[#0f766e] hover:bg-[#115e56] text-white text-sm px-2 py-2 rounded-md"
+                    >
+                      <PencilIcon className="w-5 h-5 mr-1" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => handleDelete(row.original)}
+                    >
+                      <TrashIcon className="w-4 h-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        : <EditMedico dataInfo={dataInfo} />}
     </div>
   )
 }

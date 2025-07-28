@@ -1,13 +1,19 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
-import { redirect } from "next/dist/server/api-utils"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { Button } from "@/components/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
     idUsuario: z.number().min(1, {
@@ -52,11 +58,11 @@ const formSchema = z.object({
     tareasAsignadas: z.string().min(2, {
         message: "Username must be at least 2 characters.",
     }),
-})
+});
 
 export default function page() {
 
-    // 1. Define your form.
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -73,28 +79,50 @@ export default function page() {
             nivelAcceso: "",
             idAuxAdmin: "",
             areaAsignada: "",
-            tareasAsignadas: ""
+            tareasAsignadas: "",
         },
-    })
+    });
 
-    // 2. Define a submit handler.
+
+    
     function onSubmit(values: z.infer<typeof formSchema>) {
-        const { idUsuario, ...dataWithoutId } = values
+        const { idUsuario, ...dataWithoutId } = values;
         try {
-            axios.post(`http://localhost:8080/administrador/administradores`,dataWithoutId);
-            console.log("SE AAGREGO ADMINISTRADOR");
-            window.location.href = "./"
+            axios.post(`http://localhost:8080/administrador/administradores`, dataWithoutId);
+            console.log("SE AGREGO ADMINISTRADOR");
+            window.location.href = "./";
         } catch (error) {
-            console.log("HUBO ERROR AL AGREGAR ADMINISTRADOR " + error)
+            console.log("HUBO ERROR AL AGREGAR ADMINISTRADOR " + error);
         }
     }
 
     return (
-        <div className="flex items-center justify-center h-screen w-screen bg-gray-100">
+        <div className="flex justify-center items-start min-h-screen bg-gray-100 py-8">
             <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-                <h2 className="text-xl font-semibold text-center mb-4">Agregar Administrador</h2>
+                {/* Botón volver arriba derecha */}
+                <div className="flex justify-end mb-2">
+                    <Button
+                        type="button"
+                        onClick={() =>
+                        (window.location.href =
+                            "http://localhost:3000/dashboard/administrador/adminAdministrador")
+                        }
+                        className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition"
+                    >
+                        Volver
+                    </Button>
+                </div>
+
+                {/* Título centrado debajo del botón */}
+                <div className="flex justify-center mb-6">
+                    <h2 className="text-xl font-semibold text-teal-700 text-center">
+                        Agregar Administrador
+                    </h2>
+                </div>
+
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
+                        {/* Aquí los campos iguales */}
                         <FormField
                             control={form.control}
                             name="idUsuario"
@@ -104,11 +132,12 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} readOnly />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={form.control}
                             name="documentoIdentidad"
@@ -118,11 +147,12 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+                        {/* ...otros campos iguales... */}
                         <FormField
                             control={form.control}
                             name="nombre"
@@ -132,7 +162,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -146,7 +176,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -160,7 +190,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -174,7 +204,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -188,7 +218,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -202,7 +232,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -216,7 +246,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -230,7 +260,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -244,7 +274,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -258,7 +288,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -272,7 +302,7 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -286,17 +316,23 @@ export default function page() {
                                     <FormControl>
                                         <Input placeholder="" {...field} />
                                     </FormControl>
-                                    <FormDescription></FormDescription>
+
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
                         <div className="col-span-2">
-                            <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Agregar</Button>
+                            <Button
+                                type="submit"
+                                className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-800 transition"
+                            >
+                                Agregar
+                            </Button>
                         </div>
                     </form>
                 </Form>
             </div>
         </div>
-    )
+    );
 }

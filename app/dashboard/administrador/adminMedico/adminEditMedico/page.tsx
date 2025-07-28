@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -59,14 +58,10 @@ const formSchema = z.object({
   }),
   noConsultorio: z.string().min(2, {
     message: "Username must be at least 2 characters.",
-  }), 
+  }),
 });
 
-export default function ProfileForm({dataInfo}: any) {
-  // ...
-
-  console.log(dataInfo.documentoIdentidad , "dataInfo")
-
+export default function ProfileForm({ dataInfo }: any) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -87,125 +82,151 @@ export default function ProfileForm({dataInfo}: any) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {    
-    const { idUsuario, ...dataWithoutId } = values;    
-    console.log("ESTOY EN EDITAR MEDICO" +  dataWithoutId)
-    axios.put(`http://localhost:8080/administrador/medicos/${values.idUsuario}`, dataWithoutId)
-    window.location.reload()  
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const { idUsuario, ...dataWithoutId } = values;
+    try {
+      axios.put(`http://localhost:8080/administrador/medicos/${values.idUsuario}`, dataWithoutId);
+      console.log("SE GUARDÓ MÉDICO");
+      window.location.reload();
+    } catch (error) {
+      console.log("HUBO ERROR AL GUARDAR MÉDICO " + error);
+    }
   }
 
   return (
-    <div className="flex items-center justify-center h-screen w-screen bg-gray-100">
-    <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-        <h2 className="text-xl font-semibold text-center mb-4">Editar Médico</h2>
+    <div className="flex justify-center items-start min-h-screen bg-gray-100 py-8">
+      <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+        {/* Botón volver arriba derecha */}
+        <div className="flex justify-end mb-2">
+          <Button
+            type="button"
+            onClick={() =>
+            (window.location.href =
+              "http://localhost:3000/dashboard/administrador/adminMedico")
+            }
+            className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition"
+          >
+            Volver
+          </Button>
+        </div>
+
+        {/* Título centrado debajo del botón */}
+        <div className="flex justify-center mb-6">
+          <h2 className="text-xl font-semibold text-teal-700 text-center">
+            Agregar Médico
+          </h2>
+        </div>
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
-                <FormField control={form.control} name="idUsuario" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>ID Usuario</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} readOnly /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="documentoIdentidad" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Identificación</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="nombre" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Nombre</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="apellido" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Apellido</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="telefono" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Teléfono</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="correo" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Correo</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="contrasena" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Contraseña</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="rol" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Rol</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="idMedico" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>ID Médico</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="dependencia" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Dependencia</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="horarioTrabajo" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Horario de Trabajo</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="numeroLicencia" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Número de Licencia</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="areaEspecializacion" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>Área de Especialización</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <FormField control={form.control} name="noConsultorio" render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>No de Consultorio</FormLabel>
-                        <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )} />
-                <div className="col-span-2">
-                    <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-                        Actualizar
-                    </Button>
-                </div>
-            </form>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4 ml-[-10px]">
+            <FormField control={form.control} name="idUsuario" render={({ field }) => (
+              <FormItem>
+                <FormLabel>ID Usuario</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} readOnly /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="documentoIdentidad" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Identificación</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="nombre" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="apellido" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Apellido</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="telefono" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Teléfono</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="correo" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Correo</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="contrasena" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Contraseña</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="rol" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Rol</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="idMedico" render={({ field }) => (
+              <FormItem>
+                <FormLabel>ID Médico</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="dependencia" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Dependencia</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="horarioTrabajo" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Horario de Trabajo</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="numeroLicencia" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Número de Licencia</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="areaEspecializacion" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Área de Especialización</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="noConsultorio" render={({ field }) => (
+              <FormItem>
+                <FormLabel>No de Consultorio</FormLabel>
+                <FormControl><Input placeholder="shadcn" {...field} /></FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <div className="col-span-2">
+              <Button
+                type="submit"
+                className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-800 transition"
+              >
+                Actualizar
+              </Button>
+            </div>
+          </form>
         </Form>
+      </div>
     </div>
-</div>
   );
 }
