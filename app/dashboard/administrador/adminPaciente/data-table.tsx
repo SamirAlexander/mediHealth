@@ -20,6 +20,7 @@ import { PencilIcon, TrashIcon, FolderIcon } from "lucide-react"
 import EditarPaciente from "./adminEditPaciente/page" 
 import { useState } from "react"
 import axios from "axios"
+import Link from "next/link"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -105,12 +106,14 @@ export function DataTable<TData, TValue>({
               <Button variant="outline" size="sm" onClick={() => handleEdit(row.original)}>
                 <PencilIcon className="w-4 h-4" />
               </Button>
+              <Link href="/dashboard/administrador/adminPaciente/adminAddMedicalHistory">
               <Button variant="outline" size="sm" onClick={() => handleAddMedicarHistory(row.original)}>
                 <FolderIcon className="w-4 h-4" />
               </Button>
-              <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original)}>
+              </Link>
+              <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original)}> 
                 <TrashIcon className="w-4 h-4" />
-              </Button>              
+               </Button> 
             </TableCell>
               </TableRow>
             ))
