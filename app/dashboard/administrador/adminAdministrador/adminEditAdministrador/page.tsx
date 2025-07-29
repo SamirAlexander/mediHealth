@@ -116,7 +116,7 @@ export default function page({ dataInfo }: any) {
         {/* Título centrado debajo del botón */}
         <div className="flex justify-center mb-6">
           <h2 className="text-xl font-semibold text-teal-700 text-center">
-            Agregar Administrador
+            Editar Administrador
           </h2>
         </div>
         <Form {...form}>

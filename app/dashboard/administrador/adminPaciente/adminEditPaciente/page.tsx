@@ -56,11 +56,11 @@ const formSchema = z.object({
     }),
     proximaCita: z.string().min(2, {
         message: "Username must be at least 2 characters.",
-    }) || z.null, 
+    }) || z.null,
 })
 
 export default function page({ dataInfo }: any) {
-    
+
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -85,10 +85,10 @@ export default function page({ dataInfo }: any) {
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {       
-        const {idUsuario,...dataWithoutId} = values
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        const { idUsuario, ...dataWithoutId } = values
         try {
-            axios.put(`http://localhost:8080/administrador/pacientes/${values.idUsuario}`,dataWithoutId);
+            axios.put(`http://localhost:8080/administrador/pacientes/${values.idUsuario}`, dataWithoutId);
             console.log("SE GUARDÓ PACIENTE");
             window.location.reload()
         } catch (error) {
@@ -97,9 +97,28 @@ export default function page({ dataInfo }: any) {
     }
 
     return (
-        <div className="flex items-center justify-center h-screen w-screen bg-gray-100">
+        <div className="flex justify-center items-start min-h-screen bg-gray-100 py-8">
             <div className="w-[40vw] bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-                <h2 className="text-xl font-semibold text-center mb-4">Editar Paciente</h2>
+                {/* Botón volver arriba derecha */}
+                <div className="flex justify-end mb-2">
+                    <Button
+                        type="button"
+                        onClick={() =>
+                        (window.location.href =
+                            "http://localhost:3000/dashboard/administrador/adminPaciente")
+                        }
+                        className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition"
+                    >
+                        Volver
+                    </Button>
+                </div>
+
+                {/* Título centrado debajo del botón */}
+                <div className="flex justify-center mb-6">
+                    <h2 className="text-xl font-semibold text-teal-700 text-center">
+                        Editar Paciente
+                    </h2>
+                </div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
                         <FormField
@@ -343,7 +362,12 @@ export default function page({ dataInfo }: any) {
                             )}
                         />
                         <div className="col-span-2">
-                            <Button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">Actualizar</Button>
+                            <Button
+                                type="submit"
+                                className="w-full bg-teal-700 text-white py-2 rounded-lg hover:bg-teal-800 transition"
+                            >
+                                Actualizar
+                            </Button>
                         </div>
 
                     </form>
